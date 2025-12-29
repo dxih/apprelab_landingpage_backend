@@ -22,5 +22,4 @@ const waitlistSchema = new mongoose.Schema({
   }
 });
 
-waitlistSchema.index({ email: 1 }); // improves lookup speed
 module.exports = mongoose.model('Waitlist', waitlistSchema);
