@@ -1,7 +1,7 @@
 // scripts/clearWaitlist.js
 require("dotenv").config();
 const mongoose = require("mongoose");
-const Waitlist = require("../src/models/Waitlist"); // adjust path if needed
+const Waitlist = require("../models/Waitlist"); // adjust path if needed
 
 const MONGO_URI = process.env.MONGO_URI;
 

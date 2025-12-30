@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const waitlistRoutes = require('./routes/waitlistRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const contactRoutes = require('./routes/contactRoutes');
-const adminBlogRoutes = require('./routes/adminBlogRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
 const { errorHandler } = require('./middlewares/errorMiddleware');
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/admin/blogs', adminBlogRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);

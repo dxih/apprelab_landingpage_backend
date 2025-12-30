@@ -1,22 +1,36 @@
 const mongoose = require('mongoose');
 
-const commentSchema = new mongoose.Schema({
-  name: String,
-  comment: String,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+const BlogSectionSchema = new mongoose.Schema(
+  {
+    heading: String,
+    text: String,
+    image: String,
+  },
+  { _id: false }
+);
 
-const blogSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  author: String,
-  likes: { type: Number, default: 0 },
-  shares: { type: Number, default: 0 },
-  comments: [commentSchema],
-  createdAt: { type: Date, default: Date.now }
-});
+const CommentSchema = new mongoose.Schema(
+  {
+    name: String,
+    comment: String,
+    createdAt: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
 
-module.exports = mongoose.model('Blog', blogSchema);
+const BlogSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    excerpt: String,
+    category: String,
+    author: String,
+    date: String,
+    content: [BlogSectionSchema],
+    likes: { type: Number, default: 0 },
+    shares: { type: Number, default: 0 },
+    comments: [CommentSchema],
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model('Blog', BlogSchema);

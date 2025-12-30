@@ -3,7 +3,7 @@ const Blog = require('../models/Blog');
 // Fetch all blogs
 const getAllBlogs = async (req, res, next) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 }); // latest first
+    const blogs = await Blog.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: blogs });
   } catch (error) {
     next(error);
@@ -55,14 +55,12 @@ const shareBlog = async (req, res, next) => {
 const commentBlog = async (req, res, next) => {
   try {
     const { name, comment } = req.body;
-    if (!name || !comment) {
-      return res.status(400).json({ success: false, message: 'Name and comment are required' });
-    }
+    if (!comment) return res.status(400).json({ success: false, message: 'Comment is required' });
 
     const blog = await Blog.findById(req.params.id);
     if (!blog) return res.status(404).json({ success: false, message: 'Blog not found' });
 
-    blog.comments.push({ name, comment });
+    blog.comments.push({ name: name || 'Anonymous', comment });
     await blog.save();
 
     res.status(201).json({ success: true, data: blog });
