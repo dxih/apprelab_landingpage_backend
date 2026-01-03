@@ -14,6 +14,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// ✅ HEALTH ROUTE
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Routes
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/blogs', blogRoutes);
