@@ -6,9 +6,16 @@ const waitlistRoutes = require('./routes/waitlistRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
+// Admin routes
+const adminAuthRoutes = require('./routes/adminAuth.routes');
+const adminBlogRoutes = require('./routes/adminBlog.routes');
+const adminJobRoutes = require('./routes/adminJob.routes');
+const uploadRoutes = require('./routes/upload.routes');
 const { errorHandler } = require('./middlewares/errorMiddleware');
 
+
 const app = express();
+
 
 // Middleware
 app.use(cors());
@@ -25,6 +32,10 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 
+app.use('/api/admin/auth', adminAuthRoutes);
+app.use('/api/admin/blogs', adminBlogRoutes);
+app.use('/api/admin/jobs', adminJobRoutes);
+app.use('/api/admin/upload', uploadRoutes);
 // Error Handling Middleware
 app.use(errorHandler);
 

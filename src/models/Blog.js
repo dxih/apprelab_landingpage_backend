@@ -25,7 +25,9 @@ const BlogSchema = new mongoose.Schema(
     category: String,
     author: String,
     date: String,
+    coverImage: String,            // new field for admin upload
     content: [BlogSectionSchema],
+    status: { type: String, enum: ['draft', 'published'], default: 'draft' },  // new
     likes: { type: Number, default: 0 },
     shares: { type: Number, default: 0 },
     comments: [CommentSchema],
