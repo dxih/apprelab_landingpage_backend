@@ -5,7 +5,7 @@ const Job = require('../models/Job');
  */
 const getAllJobs = async (req, res, next) => {
   try {
-    const jobs = await Job.find({ isActive: true }).sort({ createdAt: -1 });
+    const jobs = await Job.find({ status: 'active' }).sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: jobs });
   } catch (error) {
     next(error);
