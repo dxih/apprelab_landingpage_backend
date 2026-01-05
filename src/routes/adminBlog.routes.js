@@ -1,13 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { getBlogs, createBlog, updateBlog, deleteBlog } = require('../controllers/adminBlog.controller');
+const { 
+  getBlogs, 
+  getBlogById,  // ✅ Import new function
+  createBlog, 
+  updateBlog, 
+  deleteBlog 
+} = require('../controllers/adminBlog.controller');
 const { protect } = require('../middlewares/auth.middleware');
 
+// Apply authentication middleware to all routes
 router.use(protect);
 
-router.get('/', getBlogs);
-router.post('/', createBlog);
-router.put('/:id', updateBlog);
-router.delete('/:id', deleteBlog);
+// Routes
+router.get('/', getBlogs);           // GET all blogs
+router.get('/:id', getBlogById);     // ✅ GET single blog by ID
+router.post('/', createBlog);        // CREATE new blog
+router.put('/:id', updateBlog);      // UPDATE blog
+router.delete('/:id', deleteBlog);   // DELETE blog
 
 module.exports = router;
