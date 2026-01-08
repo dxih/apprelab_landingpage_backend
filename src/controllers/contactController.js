@@ -12,10 +12,22 @@ const sendContactMessage = async (req, res, next) => {
 
     const newMessage = await Contact.create({ fullName, email, message });
 
-    // Notify admin
-    await sendEmail(process.env.ADMIN_EMAIL, 'New Contact Message', contactAdminNotification(fullName, email, message));
+    // Get email template
+    const emailTemplate = contactAdminNotification(fullName, email, message);
 
-    res.status(201).json({ success: true, message: 'Message sent successfully', data: newMessage });
+    // Notify admin
+    await sendEmail({
+      to: process.env.ADMIN_EMAIL,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html,
+      text: emailTemplate.text,
+    });
+
+    res.status(201).json({ 
+      success: true, 
+      message: 'Message sent successfully', 
+      data: newMessage 
+    });
   } catch (error) {
     next(error);
   }

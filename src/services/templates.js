@@ -392,7 +392,62 @@ Role: ${role}
   };
 };
 
+/* ✅ Contact form admin notification */
+const contactAdminNotification = (fullName, email, message) => {
+  return {
+    subject: "📬 New Contact Form Message",
+    text: `
+New contact form submission:
+
+From: ${fullName}
+Email: ${email}
+
+Message:
+${message}
+    `,
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; padding: 20px 0;">
+          <img
+            src="https://res.cloudinary.com/dtfgxixse/image/upload/v1767297125/apprelab_icon_mxfweq.png"
+            alt="Apprelab Icon"
+            width="80"
+            height="80"
+            style="display: inline-block;"
+          />
+        </div>
+
+        <h3 style="color: #333;">📬 New Contact Form Submission</h3>
+        
+        <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p style="margin: 10px 0;"><strong>From:</strong> ${fullName}</p>
+          <p style="margin: 10px 0;"><strong>Email:</strong> ${email}</p>
+        </div>
+
+        <div style="background-color: #fff; padding: 20px; border-left: 4px solid #0057FF; margin: 20px 0;">
+          <p style="margin: 0 0 10px 0;"><strong>Message:</strong></p>
+          <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding: 20px 0;">
+          <img
+            src="https://res.cloudinary.com/dtfgxixse/image/upload/v1767297122/apprelab_logo_swiyew.png"
+            alt="Apprelab Logo"
+            width="150"
+            style="display: inline-block;"
+          />
+        </div>
+
+        <p style="text-align: center; font-size: 12px; color: #888; margin-top: 16px;">
+          © ${new Date().getFullYear()} Apprelab. All rights reserved.
+        </p>
+      </div>
+    `,
+  };
+};
+
 module.exports = {
   welcomeEmail,
   adminNotification,
+  contactAdminNotification, // Add this export
 };
