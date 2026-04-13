@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { sendEmail } = require("../services/emailService");
+const Newsletter = require("../models/Newsletter");
 
 router.post("/", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, interest } = req.body;
 
     if (!email) {
       return res.status(400).json({
@@ -13,13 +14,28 @@ router.post("/", async (req, res) => {
       });
     }
 
+    // Check if already subscribed
+    const existing = await Newsletter.findOne({ email: email.toLowerCase() });
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        message: "You are already subscribed to our newsletter!",
+      });
+    }
+
+    // Create subscription
+    await Newsletter.create({
+      email: email.toLowerCase(),
+      interest: interest || ""
+    });
+
     /**
      * 1️⃣ Send welcome email to user
      */
-const userEmailResult = await sendEmail({
-  to: email,
-  subject: "Welcome to Apprelab – Let’s Get Started! 🎉",
-  text: `Welcome to Apprelab!
+    const userEmailResult = await sendEmail({
+      to: email,
+      subject: "Welcome to Apprelab – Let’s Get Started! 🎉",
+      text: `Welcome to Apprelab!
 
 Hi there,
 
@@ -35,7 +51,7 @@ Stay tuned for the latest news and projects. 🚀
 Cheers,
 The Apprelab Team
 `,
-  html: `
+      html: `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
     <div style="text-align: center; margin-bottom: 20px;">
       <h1 style="color: #0057FF; margin: 0; font-size: 24px;">Welcome to Apprelab!</h1>
@@ -62,14 +78,12 @@ The Apprelab Team
     </p>
   </div>
   `,
-});
-
+    });
 
     if (!userEmailResult.success) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to send welcome email",
-      });
+      console.error("❌ Failed to send welcome email:", userEmailResult.message);
+      // We still return success: true because the user is in the DB now
+      // but we might want to inform them or log it.
     }
 
     /**
@@ -78,10 +92,11 @@ The Apprelab Team
     sendEmail({
       to: process.env.ADMIN_EMAIL,
       subject: "New Newsletter Signup 🚀",
-      text: `New user joined the newsletter: ${email}`,
+      text: `New user joined the newsletter: ${email}${interest ? `\nInterest: ${interest}` : ""}`,
       html: `
         <h3>New Newsletter Signup</h3>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Interest:</strong> ${interest || "Not specified"}</p>
         <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
       `,
     }).catch((err) => {
@@ -93,13 +108,13 @@ The Apprelab Team
      */
     res.status(200).json({
       success: true,
-      message: "Newsletter email sent",
+      message: "Successfully subscribed to the newsletter!",
     });
   } catch (error) {
     console.error("❌ Newsletter error:", error);
     res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error. Please try again later.",
     });
   }
 });

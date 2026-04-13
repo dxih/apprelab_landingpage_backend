@@ -13,7 +13,7 @@ const waitlistSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['learner', 'mentor', 'sme'],
+    enum: ['learner', 'mentor', 'sme', 'business'],
     required: [true, 'Role is required']
   },
   createdAt: {
