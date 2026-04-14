@@ -39,6 +39,8 @@ const jobRoutes = require('./routes/jobRoutes');
 const adminAuthRoutes = require('./routes/adminAuth.routes');
 const adminBlogRoutes = require('./routes/adminBlog.routes');
 const adminJobRoutes = require('./routes/adminJob.routes');
+const adminWaitlistRoutes = require('./routes/adminWaitlist.routes');
+const adminNewsletterRoutes = require('./routes/adminNewsletter.routes');
 const uploadRoutes = require('./routes/uploadRoutes');
 
 // Public routes
@@ -53,6 +55,8 @@ app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/admin/blogs', adminBlogRoutes);
 app.use('/api/admin/jobs', adminJobRoutes);  // ✅ THIS MUST BE HERE
 app.use('/api/admin/upload', uploadRoutes);
+app.use('/api/admin/waitlist', adminWaitlistRoutes);
+app.use('/api/admin/newsletter', adminNewsletterRoutes);
 
 // ============= ERROR HANDLING =============
 const { errorHandler } = require('./middlewares/errorMiddleware');

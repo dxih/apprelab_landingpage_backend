@@ -51,4 +51,17 @@ const joinWaitlist = async (req, res, next) => {
   }
 };
 
-module.exports = { joinWaitlist };
+const getWaitlistEntries = async (req, res, next) => {
+  try {
+    const entries = await Waitlist.find().sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      count: entries.length,
+      data: entries,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { joinWaitlist, getWaitlistEntries };
